@@ -208,3 +208,7 @@ input#entryTitle {
 .entry-list button:hover {
   background: #ff1493;
 }
+.cut {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
