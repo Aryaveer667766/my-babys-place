@@ -3,32 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Baby’s Journal 🐚</title>
+  <title>My Baby’s Journal 📒</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="journal-page">
   <div class="journal-container">
-    <h1>My Overthinking Space 🧠✨</h1>
-    <textarea id="journalEntry" placeholder="Write anything on your mind..."></textarea>
+    <h1>My Journal Entries 📔</h1>
+
+    <!-- Create new entry -->
+    <input type="text" id="entryTitle" placeholder="Entry title..." />
+    <textarea id="entryContent" placeholder="Write your thoughts..."></textarea>
+
     <div class="journal-actions">
-      <button onclick="saveJournal()">Save</button>
+      <button onclick="saveEntry()">Save Entry</button>
       <a href="index.html" class="switch">← Back to Wishlist</a>
     </div>
     <p id="saveMsg" class="save-msg"></p>
+
+    <h2>Previous Entries</h2>
+    <ul id="entriesList" class="entry-list"></ul>
   </div>
 
   <script>
-    const textarea = document.getElementById("journalEntry");
+    const titleInput = document.getElementById("entryTitle");
+    const contentInput = document.getElementById("entryContent");
+    const entriesList = document.getElementById("entriesList");
     const saveMsg = document.getElementById("saveMsg");
 
-    // Load saved journal
-    textarea.value = localStorage.getItem("journalEntry") || "";
+    let journal = JSON.parse(localStorage.getItem("journalPages")) || [];
 
-    function saveJournal() {
-      localStorage.setItem("journalEntry", textarea.value);
-      saveMsg.textContent = "Saved! 💾";
-      setTimeout(() => (saveMsg.textContent = ""), 2000);
+    function renderEntries() {
+      entriesList.innerHTML = "";
+      journal.forEach((entry, i) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>${entry.title}</strong>
+          <button onclick="loadEntry(${i})">View</button>
+        `;
+        entriesList.appendChild(li);
+      });
     }
+
+    function saveEntry() {
+      const title = titleInput.value.trim();
+      const content = contentInput.value.trim();
+      if (!title || !content) return alert("Please fill in both fields.");
+
+      journal.unshift({ title, content });
+      localStorage.setItem("journalPages", JSON.stringify(journal));
+
+      titleInput.value = "";
+      contentInput.value = "";
+      saveMsg.textContent = "Saved! 💾";
+      renderEntries();
+
+      setTimeout(() => saveMsg.textContent = "", 2000);
+    }
+
+    window.loadEntry = function(index) {
+      const entry = journal[index];
+      titleInput.value = entry.title;
+      contentInput.value = entry.content;
+    };
+
+    renderEntries();
   </script>
 </body>
 </html>
