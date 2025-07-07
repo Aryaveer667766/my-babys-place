@@ -57,3 +57,26 @@ footer {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+body.light {
+  background-color: #fff;
+  color: #333;
+}
+body.night {
+  background-color: #111;
+  color: #eee;
+}
+body.cute {
+  background-color: #ffe5ec;
+  color: #a52a5a;
+}
+
+.theme-toggle {
+  margin-bottom: 15px;
+}
+
+.theme-toggle select {
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
