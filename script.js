@@ -6,24 +6,105 @@ const list = document.getElementById("wishlist");
 const addBtn = document.getElementById("addBtn");
 const footer = document.getElementById("footer");
 const themeSelect = document.getElementById("themeSelect");
+const DELETE_AFTER_HOURS = 4;
 
-// 📝 Add item
-addBtn.addEventListener("click", async () => {
+let wishlistItems = [];
+
+// ➕ Add item
+addBtn.addEventListener("click", () => {
   const value = input.value.trim();
-  if (value === "") return;
-  const li = document.createElement("li");
-  li.innerHTML = `<input type="checkbox" /> ${value}`;
-  list.appendChild(li);
-  await syncWishlist(list.innerHTML);
+  if (!value) return;
+  wishlistItems.push({
+    text: value,
+    done: false,
+    timestamp: null
+  });
   input.value = "";
+  saveAndRender();
 });
 
-// 🔁 Load saved list
+// ✅ Save and render
+function saveAndRender() {
+  renderList();
+  syncWishlist(wishlistItems);
+}
+
+// 🖼️ Render wishlist
+function renderList() {
+  list.innerHTML = "";
+  const now = Date.now();
+
+  wishlistItems = wishlistItems.filter(item => {
+    if (item.done && item.timestamp) {
+      const age = (now - item.timestamp) / (1000 * 60 * 60);
+      return age < DELETE_AFTER_HOURS;
+    }
+    return true;
+  });
+
+  wishlistItems.forEach((item, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <label>
+        <input type="checkbox" data-index="${i}" ${item.done ? "checked" : ""}>
+        <span class="${item.done ? 'cut' : ''}">${item.text}</span>
+      </label>
+    `;
+    list.appendChild(li);
+  });
+
+  document.querySelectorAll("input[type='checkbox']").forEach(box => {
+    box.addEventListener("change", e => {
+      const i = e.target.dataset.index;
+      const checked = e.target.checked;
+      wishlistItems[i].done = checked;
+      wishlistItems[i].timestamp = checked ? Date.now() : null;
+      saveAndRender();
+    });
+  });
+}
+
+// ☁️ Load from Firebase
 async function loadItems() {
-  const html = await getWishlist();
-  list.innerHTML = html;
+  try {
+    const raw = await getWishlist();
+    wishlistItems = JSON.parse(raw || "[]");
+  } catch {
+    wishlistItems = [];
+  }
+  saveAndRender();
 }
 loadItems();
+
+// 🎨 Theme switcher
+function applyTheme(theme) {
+  document.body.className = theme;
+  localStorage.setItem("theme", theme);
+}
+themeSelect.addEventListener("change", (e) => {
+  applyTheme(e.target.value);
+});
+const savedTheme = localStorage.getItem("theme") || "light";
+applyTheme(savedTheme);
+themeSelect.value = savedTheme;
+
+// ⏳ Countdown timer
+function updateFullCountdown() {
+  const startDate = new Date("2023-08-12T00:00:00");
+  const now = new Date();
+  const diff = now - startDate;
+
+  const milliseconds = diff % 1000;
+  const seconds = Math.floor((diff / 1000) % 60);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  const display = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds 💘`;
+  document.getElementById("fullTime").textContent = display;
+}
+setInterval(updateFullCountdown, 1000);
+updateFullCountdown();
 
 // 💝 Floating hearts
 function createHearts() {
@@ -35,6 +116,7 @@ function createHearts() {
   heart.style.bottom = '-30px';
   heart.style.fontSize = '24px';
   heart.style.zIndex = 1000;
+  heart.style.animation = 'floatUp 4s linear forwards';
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 4000);
 }
@@ -80,36 +162,6 @@ function showWelcomePopup() {
   };
 }
 showWelcomePopup();
-
-// 🌓 Theme switcher
-function applyTheme(theme) {
-  document.body.className = theme;
-  localStorage.setItem("theme", theme);
-}
-themeSelect.addEventListener("change", (e) => {
-  applyTheme(e.target.value);
-});
-const savedTheme = localStorage.getItem("theme") || "light";
-applyTheme(savedTheme);
-themeSelect.value = savedTheme;
-
-// ⏳ Countdown timer
-function updateFullCountdown() {
-  const startDate = new Date("2023-08-12T00:00:00");
-  const now = new Date();
-  const diff = now - startDate;
-
-  const milliseconds = diff % 1000;
-  const seconds = Math.floor((diff / 1000) % 60);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-  const display = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds 💘`;
-  document.getElementById("fullTime").textContent = display;
-}
-setInterval(updateFullCountdown, 100);
-updateFullCountdown();
 
 // 💌 Footer secret message
 footer.addEventListener("click", () => {
