@@ -169,3 +169,42 @@ textarea#journalEntry {
   font-weight: bold;
   color: #c2185b;
 }
+input#entryTitle {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 2px solid #ffd6e7;
+  background: #fffafc;
+}
+
+.entry-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.entry-list li {
+  background: #ffe6f2;
+  padding: 10px 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.entry-list button {
+  background: #ff69b4;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.entry-list button:hover {
+  background: #ff1493;
+}
