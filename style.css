@@ -1,141 +1,50 @@
-/* General Styles */
 body {
-  margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* Wishlist Page */
-body.wishlist {
-  background: linear-gradient(135deg, #ffe9ec, #ffccd5);
-  color: #333;
-}
-
-/* Journal Page */
-body.journal {
-  background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+  margin: 0;
+  padding: 0;
+  background-color: #ffeef2;
   color: #222;
 }
 
 .container {
-  flex: 1;
-  max-width: 600px;
-  margin: 40px auto;
   padding: 20px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 1s ease;
-}
-
-h1 {
+  max-width: 600px;
+  margin: auto;
   text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
 }
 
-input,
-textarea {
+input, textarea {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
+  padding: 10px;
+  margin: 10px 0;
   border-radius: 10px;
   border: 1px solid #ccc;
-  font-size: 16px;
-  resize: none;
-}
-
-textarea {
-  height: 200px;
 }
 
 button {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  background-color: #ff88aa;
-  color: white;
+  padding: 10px 20px;
   border: none;
+  background: #ff92ac;
+  color: white;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background-color: #ff6699;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-ul li {
-  background: #fff0f4;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  animation: fadeIn 0.5s ease;
-}
-
-footer {
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  color: #666;
+  font-weight: bold;
 }
 
 .switch {
-  display: block;
-  text-align: center;
+  display: inline-block;
   margin-top: 20px;
+  color: #ff4081;
+  text-decoration: none;
+}
+
+ul {
+  text-align: left;
+}
+
+footer {
+  margin-top: 40px;
+  font-size: 0.9em;
   color: #666;
-  text-decoration: underline;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Floating Hearts */
-.floating-heart {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: pink;
-  animation: floatHeart 5s linear infinite;
-  border-radius: 50%;
-  transform: rotate(45deg);
-  z-index: 1000;
-}
-
-@keyframes floatHeart {
-  0% {
-    opacity: 0;
-    bottom: 0;
-    left: 50%;
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-100px) rotate(90deg);
-  }
-  100% {
-    opacity: 0;
-    bottom: 100%;
-    left: 55%;
-  }
+  text-align: center;
 }
