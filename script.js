@@ -113,4 +113,21 @@ footer.addEventListener("click", () => {
     </div>
   `;
   document.body.appendChild(secret);
+  const themeSelect = document.getElementById("themeSelect");
+
+function applyTheme(theme) {
+  document.body.className = theme;
+  localStorage.setItem("theme", theme);
+}
+
+themeSelect.addEventListener("change", (e) => {
+  applyTheme(e.target.value);
 });
+
+// Load saved theme
+const savedTheme = localStorage.getItem("theme") || "light";
+applyTheme(savedTheme);
+themeSelect.value = savedTheme;
+
+});
+
