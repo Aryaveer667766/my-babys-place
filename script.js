@@ -1,32 +1,29 @@
+import { syncWishlist, getWishlist } from './firebase.js';
+
 const input = document.getElementById("itemInput");
 const list = document.getElementById("wishlist");
 
-// Add item to list and show message
-function addItem() {
+async function addItem() {
   const value = input.value.trim();
   if (value === "") return;
 
   const li = document.createElement("li");
   li.innerHTML = `<input type="checkbox" /> ${value}`;
   list.appendChild(li);
-  saveItems();
+  await saveItems();
   input.value = "";
-
   showMessage("Added to your wishlist 💕");
 }
 
-// Save wishlist to localStorage
-function saveItems() {
-  localStorage.setItem("wishlistItems", list.innerHTML);
+async function saveItems() {
+  await syncWishlist(list.innerHTML);
 }
 
-// Load wishlist from localStorage
-function loadItems() {
-  const data = localStorage.getItem("wishlistItems");
-  if (data) list.innerHTML = data;
+async function loadItems() {
+  const html = await getWishlist();
+  list.innerHTML = html;
 }
 
-// Show cute message
 function showMessage(msg) {
   const el = document.createElement("div");
   el.textContent = msg;
@@ -36,7 +33,6 @@ function showMessage(msg) {
   setTimeout(() => el.remove(), 2000);
 }
 
-// Floating hearts animation
 function createHearts() {
   const heart = document.createElement('div');
   heart.className = 'floating-heart';
