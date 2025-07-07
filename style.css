@@ -2,61 +2,10 @@ body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #ffeef2;
-  color: #222;
+  transition: background-color 0.5s, color 0.5s;
 }
 
-.container {
-  padding: 20px;
-  max-width: 600px;
-  margin: auto;
-  text-align: center;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  background: #ff92ac;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.switch {
-  display: inline-block;
-  margin-top: 20px;
-  color: #ff4081;
-  text-decoration: none;
-}
-
-ul {
-  text-align: left;
-}
-
-footer {
-  margin-top: 40px;
-  font-size: 0.9em;
-  color: #666;
-  text-align: center;
-}
-@keyframes floatUp {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-150vh); opacity: 0; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
+/* Theme Styles */
 body.light {
   background-color: #fff;
   color: #333;
@@ -66,8 +15,55 @@ body.night {
   color: #eee;
 }
 body.cute {
-  background-color: #ffe5ec;
+  background-color: #fff0f5;
   color: #a52a5a;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 80%;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ff69b4;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff1493;
+}
+
+ul#wishlist {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+ul#wishlist li {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #ffe6f2;
+  border-radius: 12px;
+  text-align: left;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .theme-toggle {
@@ -80,3 +76,36 @@ body.cute {
   font-weight: bold;
 }
 
+.countdown-box {
+  background: #fff0f5;
+  padding: 15px;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #c2185b;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(255, 182, 193, 0.4);
+}
+
+footer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #888;
+  cursor: pointer;
+}
+
+.floating-heart {
+  animation: floatUp 4s ease-in forwards;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-150vh); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
