@@ -8,23 +8,37 @@
 </head>
 <body class="wishlist">
   <div class="container">
-    <div class="theme-toggle">
-  <label>Theme: </label>
-  <select id="themeSelect">
-    <option value="light">Light 🌞</option>
-    <option value="night">Night 🌙</option>
-    <option value="cute">Cute 🐻</option>
-  </select>
-</div>
     <h1>Things I Want 💫</h1>
+
+    <!-- 🌗 Theme Switcher -->
+    <div class="theme-toggle">
+      <label>Theme: </label>
+      <select id="themeSelect">
+        <option value="light">Light 🌞</option>
+        <option value="night">Night 🌙</option>
+        <option value="cute">Cute 🐻</option>
+      </select>
+    </div>
+
+    <!-- ⏳ Countdown Timer -->
+    <div id="countdown" class="countdown-box">
+      ⏳ We've been together for: <br />
+      <span id="fullTime">Loading...</span>
+    </div>
+
+    <!-- 📝 Wishlist Input -->
     <input type="text" id="itemInput" placeholder="Add something you want..." />
     <button id="addBtn">Add</button>
     <ul id="wishlist"></ul>
+
+    <!-- 🔁 Link to Journal Page -->
     <a href="journal.html" class="switch">Go to Journal 📝</a>
   </div>
 
+  <!-- 💌 Footer Surprise -->
   <footer id="footer">I'm always here for you 💌 – Arya</footer>
 
+  <!-- 📜 Script -->
   <script type="module" src="script.js"></script>
 </body>
 </html>
