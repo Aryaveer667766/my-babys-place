@@ -1,16 +1,16 @@
 import { syncWishlist, getWishlist } from './firebase.js';
 
-// 🎯 Select elements
+// Elements
 const input = document.getElementById("itemInput");
 const list = document.getElementById("wishlist");
 const addBtn = document.getElementById("addBtn");
 const footer = document.getElementById("footer");
+const themeSelect = document.getElementById("themeSelect");
 
-// ✅ Add item to wishlist
+// 📝 Add item
 addBtn.addEventListener("click", async () => {
   const value = input.value.trim();
   if (value === "") return;
-
   const li = document.createElement("li");
   li.innerHTML = `<input type="checkbox" /> ${value}`;
   list.appendChild(li);
@@ -18,14 +18,14 @@ addBtn.addEventListener("click", async () => {
   input.value = "";
 });
 
-// ✅ Load wishlist from Firebase
+// 🔁 Load saved list
 async function loadItems() {
   const html = await getWishlist();
   list.innerHTML = html;
 }
 loadItems();
 
-// 🎈 Floating hearts
+// 💝 Floating hearts
 function createHearts() {
   const heart = document.createElement('div');
   heart.className = 'floating-heart';
@@ -34,14 +34,13 @@ function createHearts() {
   heart.style.left = Math.random() * 100 + '%';
   heart.style.bottom = '-30px';
   heart.style.fontSize = '24px';
-  heart.style.animation = 'floatUp 4s ease-in';
   heart.style.zIndex = 1000;
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 4000);
 }
 setInterval(createHearts, 1200);
 
-// 🎁 Show welcome popup (only on first visit)
+// 💬 Welcome popup (first time only)
 function showWelcomePopup() {
   if (localStorage.getItem("welcomed")) return;
 
@@ -82,7 +81,37 @@ function showWelcomePopup() {
 }
 showWelcomePopup();
 
-// 💌 Footer secret modal
+// 🌓 Theme switcher
+function applyTheme(theme) {
+  document.body.className = theme;
+  localStorage.setItem("theme", theme);
+}
+themeSelect.addEventListener("change", (e) => {
+  applyTheme(e.target.value);
+});
+const savedTheme = localStorage.getItem("theme") || "light";
+applyTheme(savedTheme);
+themeSelect.value = savedTheme;
+
+// ⏳ Countdown timer
+function updateFullCountdown() {
+  const startDate = new Date("2023-08-12T00:00:00");
+  const now = new Date();
+  const diff = now - startDate;
+
+  const milliseconds = diff % 1000;
+  const seconds = Math.floor((diff / 1000) % 60);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  const display = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds, ${milliseconds} ms 💘`;
+  document.getElementById("fullTime").textContent = display;
+}
+setInterval(updateFullCountdown, 100);
+updateFullCountdown();
+
+// 💌 Footer secret message
 footer.addEventListener("click", () => {
   const secret = document.createElement("div");
   secret.innerHTML = `
@@ -113,21 +142,4 @@ footer.addEventListener("click", () => {
     </div>
   `;
   document.body.appendChild(secret);
-  const themeSelect = document.getElementById("themeSelect");
-
-function applyTheme(theme) {
-  document.body.className = theme;
-  localStorage.setItem("theme", theme);
-}
-
-themeSelect.addEventListener("change", (e) => {
-  applyTheme(e.target.value);
 });
-
-// Load saved theme
-const savedTheme = localStorage.getItem("theme") || "light";
-applyTheme(savedTheme);
-themeSelect.value = savedTheme;
-
-});
-
