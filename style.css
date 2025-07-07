@@ -109,3 +109,63 @@ footer {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+/* Journal Page Styling */
+body.journal-page {
+  background-color: #fffafc;
+  color: #5a2a60;
+  font-family: 'Georgia', serif;
+}
+
+.journal-container {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #fff0f5;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255, 182, 193, 0.3);
+  text-align: center;
+}
+
+.journal-container h1 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+textarea#journalEntry {
+  width: 100%;
+  height: 250px;
+  padding: 15px;
+  border: 2px solid #ffb6c1;
+  border-radius: 15px;
+  font-size: 1rem;
+  resize: vertical;
+  background: #fff;
+  box-shadow: inset 0 0 10px rgba(255, 192, 203, 0.2);
+}
+
+.journal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.journal-actions button {
+  padding: 10px 20px;
+  background-color: #ff69b4;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.journal-actions button:hover {
+  background-color: #ff1493;
+}
+
+.save-msg {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #c2185b;
+}
