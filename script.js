@@ -1,37 +1,12 @@
 import { syncWishlist, getWishlist } from './firebase.js';
 
-const input = document.getElementById("itemInput");
-const list = document.getElementById("wishlist");
-const addBtn = document.getElementById("addBtn");
-
-// Add item
-addBtn.addEventListener("click", async () => {
-  const value = input.value.trim();
-  if (value === "") return;
-
-  const li = document.createElement("li");
-  li.innerHTML = `<input type="checkbox" /> ${value}`;
-  list.appendChild(li);
-
-  await syncWishlist(list.innerHTML);
-  input.value = "";
-});
-
-// Load existing wishlist on page load
-async function loadItems() {
-  const html = await getWishlist();
-  list.innerHTML = html;
-}
-loadItems();
-import { syncWishlist, getWishlist } from './firebase.js';
-
-// Elements
+// 🎯 Select elements
 const input = document.getElementById("itemInput");
 const list = document.getElementById("wishlist");
 const addBtn = document.getElementById("addBtn");
 const footer = document.getElementById("footer");
 
-// 💖 Add item
+// ✅ Add item to wishlist
 addBtn.addEventListener("click", async () => {
   const value = input.value.trim();
   if (value === "") return;
@@ -43,14 +18,14 @@ addBtn.addEventListener("click", async () => {
   input.value = "";
 });
 
-// 💾 Load wishlist
+// ✅ Load wishlist from Firebase
 async function loadItems() {
   const html = await getWishlist();
   list.innerHTML = html;
 }
 loadItems();
 
-// 🎈 Floating hearts every 1.2s
+// 🎈 Floating hearts
 function createHearts() {
   const heart = document.createElement('div');
   heart.className = 'floating-heart';
@@ -66,7 +41,7 @@ function createHearts() {
 }
 setInterval(createHearts, 1200);
 
-// 🎁 Surprise welcome popup (first visit only)
+// 🎁 Show welcome popup (only on first visit)
 function showWelcomePopup() {
   if (localStorage.getItem("welcomed")) return;
 
@@ -107,7 +82,7 @@ function showWelcomePopup() {
 }
 showWelcomePopup();
 
-// 💌 Secret “From Arya” mode (footer click)
+// 💌 Footer secret modal
 footer.addEventListener("click", () => {
   const secret = document.createElement("div");
   secret.innerHTML = `
@@ -139,4 +114,3 @@ footer.addEventListener("click", () => {
   `;
   document.body.appendChild(secret);
 });
-
