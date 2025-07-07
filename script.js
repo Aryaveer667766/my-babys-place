@@ -105,7 +105,7 @@ function updateFullCountdown() {
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-  const display = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds, ${milliseconds} ms 💘`;
+  const display = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds 💘`;
   document.getElementById("fullTime").textContent = display;
 }
 setInterval(updateFullCountdown, 100);
