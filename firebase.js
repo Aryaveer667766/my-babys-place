@@ -5,23 +5,31 @@ import {
   setDoc,
   getDoc
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js";
 
+// 🔐 Your Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyDnKHTghSxW7fi6bp_UGBhR6Nx4paAtO4U",
   authDomain: "my-babys-place.firebaseapp.com",
   projectId: "my-babys-place",
-  storageBucket: "my-babys-place.firebasestorage.app",
+  storageBucket: "my-babys-place.appspot.com",
   messagingSenderId: "276027805309",
   appId: "1:276027805309:web:d072a5981499be0e126b14",
   measurementId: "G-58WE41QTTZ"
 };
 
-// Initialize Firebase
+// 🔥 Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+export const db = getFirestore(app);
+const storage = getStorage(app);
 
 //
-// ✅ Wishlist (with checkbox status & auto-delete support)
+// ✅ Wishlist Functions
 //
 export async function syncWishlist(dataArray) {
   await setDoc(doc(db, "wishlist", "myBaby"), {
@@ -35,16 +43,33 @@ export async function getWishlist() {
 }
 
 //
-// ✅ Single-Page Journal (Overthinking section)
+// ✅ Journal Functions (with text + gallery)
 //
-export async function syncJournal(text, time) {
+export async function syncJournal(note, lastUpdated, gallery = []) {
   await setDoc(doc(db, "journal", "myBaby"), {
-    note: text,
-    lastUpdated: time
+    note,
+    lastUpdated,
+    gallery
   });
 }
 
 export async function getJournal() {
   const docSnap = await getDoc(doc(db, "journal", "myBaby"));
-  return docSnap.exists() ? docSnap.data() : { note: "", lastUpdated: "" };
+  if (!docSnap.exists()) return { note: "", lastUpdated: "", gallery: [] };
+  const data = docSnap.data();
+  return {
+    note: data.note || "",
+    lastUpdated: data.lastUpdated || "",
+    gallery: data.gallery || []
+  };
+}
+
+//
+// ✅ Upload Photo to Firebase Storage and Return URL
+//
+export async function uploadPhoto(file) {
+  const storageRef = ref(storage, `journal/photo-${Date.now()}-${file.name}`);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
 }
