@@ -212,3 +212,28 @@ input#entryTitle {
   text-decoration: line-through;
   opacity: 0.6;
 }
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.photo-entry {
+  background: #ffe6f2;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 182, 193, 0.2);
+}
+
+.photo-entry img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.photo-entry p {
+  font-size: 0.9rem;
+  color: #a52a5a;
+}
