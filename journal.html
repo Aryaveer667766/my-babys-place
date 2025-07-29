@@ -5,50 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Baby’s Journal 🐚</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .photo-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .photo-item {
-      width: 150px;
-    }
-    .photo-item img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-    }
-    .photo-item input {
-      width: 100%;
-      font-size: 12px;
-      margin-top: 5px;
-      padding: 4px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-  </style>
 </head>
 <body class="journal-page">
   <div class="journal-container">
     <h1>Memories Diary ❤️✨</h1>
-
-    <!-- Photo Uploader -->
-    <input type="file" id="photoInput" accept="image/*" multiple />
-    <div id="gallery" class="photo-gallery"></div>
-
     <textarea id="journalEntry" placeholder="Write anything on your mind..."></textarea>
-
     <div class="journal-actions">
+      <button onclick="saveJournal()">Save</button>
       <a href="index.html" class="switch">← Back to Wishlist</a>
     </div>
-
-    <p id="saveMsg" class="save-msg">Saving...</p>
+    <p id="saveMsg" class="save-msg"></p>
   </div>
 
-  <!-- Firebase and Journal Scripts -->
-  <script type="module" src="journal.js"></script>
+  <script>
+    const textarea = document.getElementById("journalEntry");
+    const saveMsg = document.getElementById("saveMsg");
+
+    // Load saved journal
+    textarea.value = localStorage.getItem("journalEntry") || "";
+
+    function saveJournal() {
+      localStorage.setItem("journalEntry", textarea.value);
+      saveMsg.textContent = "Saved! 💾";
+      setTimeout(() => (saveMsg.textContent = ""), 2000);
+    }
+  </script>
 </body>
 </html>
-
