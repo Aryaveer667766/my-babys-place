@@ -3,9 +3,12 @@ import {
   getFirestore,
   doc,
   setDoc,
-  getDoc
+  getDoc,
+  collection,
+  addDoc,
+  getDocs,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
 import {
   getStorage,
   ref,
@@ -28,44 +31,43 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-//
-// ✅ Wishlist (with checkbox status & auto-delete support)
-//
-export async function syncWishlist(dataArray) {
-  await setDoc(doc(db, "wishlist", "myBaby"), {
-    items: JSON.stringify(dataArray)
-  });
-}
-
-export async function getWishlist() {
-  const docSnap = await getDoc(doc(db, "wishlist", "myBaby"));
-  return docSnap.exists() ? docSnap.data().items : "[]";
-}
-
-//
-// ✅ Journal (text + time + gallery)
-//
-export async function syncJournal(text, time, gallery) {
+// 📝 Journal text functions
+export async function syncJournal(text, time) {
   await setDoc(doc(db, "journal", "myBaby"), {
     note: text,
-    lastUpdated: time,
-    gallery: gallery || []
+    lastUpdated: time
   });
 }
 
 export async function getJournal() {
   const docSnap = await getDoc(doc(db, "journal", "myBaby"));
-  return docSnap.exists()
-    ? docSnap.data()
-    : { note: "", lastUpdated: "", gallery: [] };
+  return docSnap.exists() ? docSnap.data() : { note: "", lastUpdated: "" };
 }
 
-//
-// ✅ Upload Photo to Firebase Storage
-//
-export async function uploadPhoto(file) {
-  const path = `journal-photos/${Date.now()}_${file.name}`;
-  const storageRef = ref(storage, path);
-  const snapshot = await uploadBytes(storageRef, file);
-  return await getDownloadURL(snapshot.ref);
+// 📸 Upload photo with caption
+export async function uploadPhotoWithCaption(file, caption) {
+  const filename = `${Date.now()}-${file.name}`;
+  const storageRef = ref(storage, `journalPhotos/${filename}`);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+
+  await addDoc(collection(db, "journalPhotos"), {
+    url,
+    caption,
+    createdAt: serverTimestamp()
+  });
+}
+
+// 🖼️ Fetch all photos with captions
+export async function getPhotos() {
+  const snapshot = await getDocs(collection(db, "journalPhotos"));
+  const result = [];
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    result.push({
+      url: data.url,
+      caption: data.caption || ""
+    });
+  });
+  return result;
 }
