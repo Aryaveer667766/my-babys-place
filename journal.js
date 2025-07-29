@@ -1,80 +1,57 @@
-import { syncJournal, getJournal, uploadPhoto } from './firebase.js';
+import {
+  syncJournal,
+  getJournal,
+  uploadPhotoWithCaption,
+  getPhotos
+} from "./firebase.js";
 
-const textarea = document.getElementById("thoughts");
-const timestamp = document.getElementById("timestamp");
+const textarea = document.getElementById("journalEntry");
+const saveMsg = document.getElementById("saveMsg");
 const photoInput = document.getElementById("photoInput");
-const galleryContainer = document.getElementById("gallery");
+const gallery = document.getElementById("gallery");
 
-let gallery = [];
+let saveTimeout = null;
 
-// Format time nicely
-function formatTime(date) {
-  return date.toLocaleString('en-IN', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-}
-
-// Save everything (text + gallery)
-async function saveJournal() {
-  const now = new Date();
-  const time = formatTime(now);
-  await syncJournal(textarea.value, time, gallery);
-  timestamp.innerText = `Last saved: ${time}`;
-}
-
-// Load from Firebase on page load
-async function loadJournal() {
+// Load journal data on start
+(async () => {
   const data = await getJournal();
   textarea.value = data.note || "";
-  timestamp.innerText = data.lastUpdated
-    ? `Last saved: ${data.lastUpdated}`
-    : "Nothing saved yet.";
-  gallery = data.gallery || [];
-  renderGallery();
-}
+  renderPhotos(await getPhotos());
+})();
 
-// Auto-save on every keystroke
+// Real-time autosave every 2 sec after typing
 textarea.addEventListener("input", () => {
-  saveJournal();
+  saveMsg.textContent = "Saving...";
+  if (saveTimeout) clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(async () => {
+    const now = new Date().toLocaleString();
+    await syncJournal(textarea.value, now);
+    saveMsg.textContent = "Saved!";
+    setTimeout(() => (saveMsg.textContent = ""), 1500);
+  }, 2000);
 });
 
-// Photo upload + caption
-photoInput.addEventListener("change", async () => {
-  const files = Array.from(photoInput.files);
+// Handle photo upload
+photoInput.addEventListener("change", async (e) => {
+  const files = Array.from(e.target.files);
   for (const file of files) {
-    const url = await uploadPhoto(file);
-    const caption = prompt(`Add a caption for "${file.name}"`) || "";
-    gallery.push({ url, caption });
+    const caption = prompt("Enter caption for this photo:");
+    if (!caption) continue;
+    await uploadPhotoWithCaption(file, caption);
   }
-  renderGallery();
-  saveJournal();
-  photoInput.value = ""; // Clear input
+  renderPhotos(await getPhotos());
 });
 
-// Show photos in gallery
-function renderGallery() {
-  galleryContainer.innerHTML = "";
-  gallery.forEach(({ url, caption }) => {
-    const wrapper = document.createElement("div");
-    wrapper.className = "photo-item";
-
-    const img = document.createElement("img");
-    img.src = url;
-    img.alt = caption;
-
-    const captionEl = document.createElement("p");
-    captionEl.textContent = caption;
-
-    wrapper.appendChild(img);
-    wrapper.appendChild(captionEl);
-    galleryContainer.appendChild(wrapper);
+// Render gallery
+function renderPhotos(photoArray) {
+  gallery.innerHTML = "";
+  photoArray.forEach(({ url, caption }) => {
+    const div = document.createElement("div");
+    div.className = "photo-item";
+    div.innerHTML = `
+      <img src="${url}" alt="memory" />
+      <input type="text" value="${caption}" disabled />
+    `;
+    gallery.appendChild(div);
   });
 }
-
-// Start
-loadJournal();
