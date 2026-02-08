@@ -90,7 +90,7 @@ themeSelect.value = savedTheme;
 
 // ⏳ Countdown timer
 function updateFullCountdown() {
-  const startDate = new Date("2023-08-12T00:00:00");
+  const startDate = new Date("2022-11-14T00:00:00");
   const now = new Date();
   const diff = now - startDate;
 
