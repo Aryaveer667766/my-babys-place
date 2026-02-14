@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Harshuu Babyyy ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Romantic Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'love-pink': '#ff758c',
+                        'love-red': '#ff4d6d',
+                        'bg-start': '#ff9a9e',
+                        'bg-end': '#fad0c4',
+                    },
+                    fontFamily: {
+                        'script': ['"Dancing Script"', 'cursive'],
+                        'sans': ['"Quicksand"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #fceef5 0%, #ffdde1 100%);
+            cursor: none; /* Hide default cursor for custom heart cursor */
+            overflow-x: hidden;
+        }
+
+        /* Custom Heart Cursor */
+        #cursor-heart {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: #ff4d6d;
+            transform: rotate(45deg);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease-out;
+        }
+        #cursor-heart::before, #cursor-heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4d6d;
+            border-radius: 50%;
+        }
+        #cursor-heart::before { left: -10px; }
+        #cursor-heart::after { top: -10px; }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(255, 77, 109, 0.1);
+        }
+
+        .floating-emoji {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp 4s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        .heart-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0px #ff4d6d); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 15px #ff4d6d); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0px #ff4d6d); }
+        }
+
+        /* Now Playing Visualizer */
+        .bar {
+            width: 4px;
+            background: #ff4d6d;
+            margin: 0 1px;
+            animation: wave 1s ease-in-out infinite;
+        }
+        @keyframes wave {
+            0%, 100% { height: 5px; }
+            50% { height: 20px; }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 min-h-screen">
+
+    <!-- Custom Cursor -->
+    <div id="cursor-heart"></div>
+
+    <!-- Background Decoration -->
+    <div id="emoji-container"></div>
+
+    <main class="relative z-10 container mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
+        
+        <!-- Top Status: Now Playing -->
+        <div class="glass px-6 py-2 rounded-full flex items-center gap-3 mb-10 animate-fade-in">
+            <div class="flex items-end h-5">
+                <div class="bar" style="animation-delay: 0.1s"></div>
+                <div class="bar" style="animation-delay: 0.3s"></div>
+                <div class="bar" style="animation-delay: 0.2s"></div>
+                <div class="bar" style="animation-delay: 0.4s"></div>
+            </div>
+            <span class="text-xs font-bold uppercase tracking-widest text-love-red">Now Playing: Our Love Story</span>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="text-center mb-16">
+            <h1 class="font-script text-6xl md:text-8xl text-love-red mb-4 drop-shadow-md">
+                Harshuu Babyyy
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 font-light italic">
+                You’re my favorite person in every universe.
+            </p>
+        </div>
+
+        <!-- Reason Card -->
+        <div class="w-full max-w-lg mb-20 transform hover:-rotate-1 transition-all">
+            <div class="glass rounded-[2rem] p-10 text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-love-red to-transparent opacity-50"></div>
+                
+                <h3 class="text-sm uppercase tracking-[0.2em] text-gray-500 mb-6 font-bold">A Daily Reminder</h3>
+                
+                <div id="reason-box" class="min-h-[100px] flex items-center justify-center">
+                    <p id="reason-text" class="text-2xl md:text-3xl font-medium text-gray-700 leading-relaxed">
+                        Loading your love...
+                    </p>
+                </div>
+
+                <button onclick="nextReason()" class="group mt-10 relative inline-flex items-center justify-center px-8 py-3 font-bold text-white transition-all duration-200 bg-love-red rounded-full hover:bg-love-pink focus:outline-none shadow-xl">
+                    <span>One more thing...</span>
+                    <span class="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Final Proposal -->
+        <div class="w-full max-w-xl">
+            <div class="glass p-12 rounded-[2.5rem] text-center relative">
+                <div class="heart-pulse text-7xl mb-6 inline-block">💖</div>
+                <h2 class="text-3xl font-bold mb-8">So, Harshuu Babyyy... Will you be my Valentine forever?</h2>
+                
+                <div class="flex flex-col md:flex-row items-center justify-center gap-6 h-32">
+                    <button onclick="celebrate()" class="w-48 bg-love-red hover:bg-love-pink text-white text-xl font-bold py-4 rounded-2xl shadow-2xl transform active:scale-95 transition-all">
+                        YES! ❤️
+                    </button>
+                    
+                    <button id="no-btn" 
+                            onmouseover="teleportNo()" 
+                            ontouchstart="teleportNo()"
+                            class="w-48 bg-white/50 text-gray-500 text-xl font-bold py-4 rounded-2xl border border-white transition-all duration-300">
+                        No 😢
+                    </button>
+                </div>
+
+                <div id="success-area" class="hidden mt-8 animate-bounce">
+                    <p class="text-3xl font-script text-love-red font-bold">I KNEW IT! I LOVE YOU SO MUCH! ❤️</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-20 opacity-40 text-sm">
+            Designed specifically for Harshuu Babyyy
+        </footer>
+    </main>
+
+    <script>
+        // --- Custom Cursor Logic ---
+        const cursor = document.getElementById('cursor-heart');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // --- Floating Emojis ---
+        const emojis = ['❤️', '💖', '🧸', '🌸', '✨', '🌹'];
+        function spawnEmoji() {
+            const container = document.getElementById('emoji-container');
+            const el = document.createElement('div');
+            el.className = 'floating-emoji';
+            el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            el.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 6000);
+        }
+        setInterval(spawnEmoji, 400);
+
+        // --- Reasons List ---
+        const reasons = [
+            "Your smile is my favorite view.",
+            "The way you call me 'baby'.",
+            "You make every bad day better just by being there.",
+            "Your kindness is literally unmatched.",
+            "I love how we can talk for hours about nothing.",
+            "You are my safest place in the world.",
+            "The way your eyes sparkle when you're happy.",
+            "Because you're you, and that's more than enough."
+        ];
+
+        let reasonIdx = 0;
+        function nextReason() {
+            const textEl = document.getElementById('reason-text');
+            textEl.style.opacity = 0;
+            textEl.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                textEl.innerText = reasons[reasonIdx];
+                reasonIdx = (reasonIdx + 1) % reasons.length;
+                textEl.style.transition = 'all 0.4s ease';
+                textEl.style.opacity = 1;
+                textEl.style.transform = 'translateY(0)';
+            }, 300);
+        }
+        nextReason();
+
+        // --- No Button Teleportation ---
+        const noBtn = document.getElementById('no-btn');
+        function teleportNo() {
+            // Subtract button size to keep it in bounds
+            const x = Math.random() * (window.innerWidth - 200);
+            const y = Math.random() * (window.innerHeight - 100);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            noBtn.style.zIndex = '1000';
+        }
+
+        // --- Success Celebration ---
+        function celebrate() {
+            const success = document.getElementById('success-area');
+            success.classList.remove('hidden');
+            noBtn.style.display = 'none';
+
+            // Confetti Blast
+            const end = Date.now() + (5 * 1000);
+            const colors = ['#ff4d6d', '#ff758c', '#ffffff'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
